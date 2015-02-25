@@ -1,6 +1,14 @@
 # Soundklaut
 
-Soundklaut is a simple soundcloud click generator / song play bot
+Soundklaut is a soundcloud click generator / song play bot.
+
+## How it works
+
+*This should be seen as a simple proof of concept*
+
+It boots up a phantomjs via capybara (poltergeist driver),
+visit the profile page and click twice on each play button.
+Once to start a song and once, with a little delay, to stop it.
 
 ## Dependencies
 
