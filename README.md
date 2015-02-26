@@ -22,7 +22,14 @@ Define soundcloud username under bin/run, then execute
 ./bin/run
 ```
 
-## TODO
+## History
+
+### Generate one click
+
+It looks like the button is clicked but the play is still not visible in the soundcloud stats. This could have several reasons.
+
+* Soundcloud is realizing the bot through the User-Agent and blocking it
+* There is some client side validation (javascript) which is not fullfilled
 
 ### Generate more than one click
 
