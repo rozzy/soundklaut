@@ -16,7 +16,7 @@ module Soundklaut
   class Client
     def initialize(profile_url)
       @profile_url = profile_url 
-      @session = Capybara::Session.new(:poltergeist)
+      @session = build_session
     end
 
     def run
@@ -26,6 +26,13 @@ module Soundklaut
     private
 
     attr_reader :profile_url, :session
+
+    def build_session
+      Capybara.register_driver :poltergeist do |app|
+        Capybara::Poltergeist::Driver.new(app, :js_errors => false)
+      end
+      Capybara::Session.new(:poltergeist)
+    end
 
     def listen
       visit_profile_page
