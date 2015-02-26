@@ -3,6 +3,16 @@ require 'capybara'
 require 'capybara/poltergeist'
 
 module Soundklaut
+  module IO
+    def write(msg)
+      stdout.print msg
+    end
+
+    def stdout
+      $stdout
+    end
+  end
+
   class Client
     def initialize(profile_url)
       @profile_url = profile_url 
@@ -55,6 +65,8 @@ module Soundklaut
     end
 
     class Track
+      include IO
+
       def initialize(track)
         @username = track.find(:css, '.soundTitle__username span').text
         @title = track.find(:css, '.soundTitle__title span').text
@@ -74,14 +86,6 @@ module Soundklaut
       end
 
       private
-
-      def write(msg)
-        stdout.print msg
-      end
-
-      def stdout
-        $stdout
-      end
 
       def to_s
         "#{@username} - #{@title}"
