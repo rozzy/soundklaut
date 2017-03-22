@@ -23,7 +23,6 @@ module Soundklaut
 
     def run
       initialize_session
-      # listen
     end
 
     private
@@ -41,16 +40,13 @@ module Soundklaut
             "--load-images=no"
           ]
         }
-
-        initialize_capybara options
       rescue JSON::ParserError => e
         options = {
           :js_errors => false,
         }
-
-        initialize_capybara options
       end
 
+      initialize_capybara options
       listen
     end
 
@@ -58,7 +54,7 @@ module Soundklaut
       Capybara.register_driver :poltergeist do |app|
         Capybara::Poltergeist::Driver.new(app, options)
       end
-      
+
       @session = Capybara::Session.new(:poltergeist)
     end
 
@@ -83,7 +79,7 @@ module Soundklaut
         track.stop
       end
       sleep 60
-      initialize_session
+      initialize_session # loop
     end
 
     def recent_tracks(session)
