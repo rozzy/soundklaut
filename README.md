@@ -1,4 +1,5 @@
 # Soundklaut
+(original author - https://github.com/JanOwiesniak/soundklaut)
 
 Soundklaut is a soundcloud click generator / song play bot.
 
