@@ -18,7 +18,7 @@ class Main
   end
 
   def profile_url
-    "https://soundcloud.com/#{profile}"
+    "https://soundcloud.com/#{profile}/tracks"
   end
 
   def profile

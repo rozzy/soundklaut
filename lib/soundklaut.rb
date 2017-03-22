@@ -15,7 +15,7 @@ module Soundklaut
 
   class Client
     def initialize(profile_url)
-      @profile_url = profile_url 
+      @profile_url = profile_url
       @session = build_session
     end
 
@@ -49,14 +49,20 @@ module Soundklaut
         random_sleep
         track.stop
       end
+      sleep 60
+      listen_to_recent_tracks
     end
 
     def recent_tracks(session)
+      5.times do
+        @session.execute_script 'window.scroll(0, 10000); console.log("scrolled to", window.pageYOffset)'
+        sleep 3
+      end
       recent_tracks_selector.map { |t| build_track(t) }
     end
 
     def recent_tracks_selector
-      session.find(:css, '.userStream__list').all(:css, '.soundList__item')
+      session.find(:css, '.userMain__content').all(:css, '.soundList__item')
     end
 
     def build_track(track)
@@ -64,7 +70,7 @@ module Soundklaut
     end
 
     def random_sleep
-      sleep random 
+      sleep random
     end
 
     def random
