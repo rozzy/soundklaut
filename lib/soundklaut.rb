@@ -1,4 +1,7 @@
-require "soundklaut/version"
+require 'net/http'
+require 'uri'
+
+require 'soundklaut/version'
 require 'capybara'
 require 'capybara/poltergeist'
 
@@ -16,22 +19,52 @@ module Soundklaut
   class Client
     def initialize(profile_url)
       @profile_url = profile_url
-      @session = build_session
     end
 
     def run
-      listen
+      initialize_session
+      # listen
     end
 
     private
 
     attr_reader :profile_url, :session
 
-    def build_session
-      Capybara.register_driver :poltergeist do |app|
-        Capybara::Poltergeist::Driver.new(app, :js_errors => false)
+    def initialize_session
+      begin
+        proxy = get_proxy_data
+        options = {
+          # :debug => true,
+          :js_errors => false,
+          :phantomjs_options => [
+            "--proxy=#{proxy['ipPort']}",
+            "--load-images=no"
+          ]
+        }
+
+        initialize_capybara options
+      rescue JSON::ParserError => e
+        options = {
+          :js_errors => false,
+        }
+
+        initialize_capybara options
       end
-      Capybara::Session.new(:poltergeist)
+
+      listen
+    end
+
+    def initialize_capybara(options)
+      Capybara.register_driver :poltergeist do |app|
+        Capybara::Poltergeist::Driver.new(app, options)
+      end
+      
+      @session = Capybara::Session.new(:poltergeist)
+    end
+
+    def get_proxy_data
+      uri = URI('https://gimmeproxy.com/api/getProxy?get=true&supportsHttps=true&maxCheckPeriod=3600')
+      JSON.parse Net::HTTP.get uri
     end
 
     def listen
@@ -50,7 +83,7 @@ module Soundklaut
         track.stop
       end
       sleep 60
-      listen_to_recent_tracks
+      initialize_session
     end
 
     def recent_tracks(session)
