@@ -103,7 +103,7 @@ module Soundklaut
     end
 
     def random
-      Random.rand(5)
+      Random.rand(30)
     end
 
     class Track
